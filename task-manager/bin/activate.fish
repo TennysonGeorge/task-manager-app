@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/admin/Desktop/test-copilot/task-manager-api/task-manager"
+set -gx VIRTUAL_ENV "/Users/admin/Desktop/task-manager-app/task-manager-api/task-manager"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
