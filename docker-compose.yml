@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  task-manager:
+    build: .
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DEBUG=true 
