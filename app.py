@@ -24,6 +24,8 @@ if __name__ == '__main__':
     # Use environment variable for host to allow connections from outside the container
     host = os.environ.get('HOST', '0.0.0.0')
     port = int(os.environ.get('PORT', 5001))
-    debug = True  # Set debug to True for development
-    
+    # Debug mode is opt-in via the DEBUG environment variable. It defaults to
+    # off because the Werkzeug debugger allows arbitrary code execution.
+    debug = os.environ.get('DEBUG', '').strip().lower() in ('1', 'true', 'yes', 'on')
+
     app.run(host=host, port=port, debug=debug)

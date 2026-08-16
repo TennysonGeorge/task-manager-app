@@ -104,10 +104,26 @@ task-manager-api/
 
 To run the application in development mode with debug features:
 ```bash
-python app.py
+DEBUG=true python app.py
 ```
 
 The application will automatically reload when you make changes to the code.
+
+## Configuration
+
+The application is configured through environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `HOST` | `0.0.0.0` | Interface the server binds to |
+| `PORT` | `5001` | Port the server listens on |
+| `DEBUG` | unset (off) | Set to `true`, `1`, `yes`, or `on` to enable debug mode |
+| `SQLALCHEMY_DATABASE_URI` | `sqlite:///tasks.db` | Database connection string |
+
+`DEBUG` defaults to **off**. Debug mode enables the Werkzeug interactive
+debugger, which permits arbitrary code execution by anyone who can reach the
+server, so it must never be enabled in a deployed environment. The Compose setup
+sets `DEBUG=true` for local development only.
 
 ## Docker Support
 
