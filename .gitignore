@@ -1,0 +1,12 @@
+# SQLite data volume created by Docker Compose
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+.venv/

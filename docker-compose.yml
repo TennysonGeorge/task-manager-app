@@ -8,4 +8,5 @@ services:
     volumes:
       - ./data:/app/data
     environment:
-      - DEBUG=true 
+      - DEBUG=true
+      - PORT=5000

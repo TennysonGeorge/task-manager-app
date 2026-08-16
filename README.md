@@ -113,20 +113,64 @@ The application will automatically reload when you make changes to the code.
 
 The application includes Docker support for containerized deployment.
 
-1. Build the Docker image:
+### Using Docker Compose (recommended)
+
+```bash
+docker compose up -d --build
+```
+
+The app is then available at `http://localhost:5001`.
+
+Useful commands:
+```bash
+docker compose logs -f        # follow logs
+docker compose down           # stop and remove the container
+```
+
+### Using Docker directly
+
+1. Build the image:
 ```bash
 docker build -t task-manager-api .
 ```
 
 2. Run the container:
 ```bash
-docker run -p 5001:5000 task-manager-api
+docker run -p 5001:5000 -e PORT=5000 task-manager-api
 ```
 
-Or use Docker Compose:
-```bash
-docker-compose up
+The `-e PORT=5000` is required — see "Container port configuration" below.
+
+### Container port configuration
+
+`app.py` defaults to port `5001`, but the Dockerfile exposes `5000` and the
+published port mapping is `5001:5000`. Without an explicit `PORT`, the app binds
+to `5001` inside the container while the mapping forwards to `5000`, so nothing
+is reachable on the host.
+
+`docker-compose.yml` therefore sets `PORT=5000` so the app binds to the port that
+is actually mapped. Keep this in mind if you change the port mapping: the
+container-side port in `ports:` and the `PORT` environment variable must match.
+
+### Dependency pinning
+
+`Flask-SQLAlchemy==2.5.1` is not compatible with SQLAlchemy 2.x. With
+`SQLAlchemy` left unpinned, pip resolves to 2.x and the app crashes on import:
+
 ```
+AttributeError: module 'sqlalchemy' has no attribute '__all__'
+```
+
+`requirements.txt` pins `SQLAlchemy==1.4.54` to avoid this, and
+`Flask-Migrate==3.1.0` to stay compatible with `Flask-SQLAlchemy` 2.x. These pins
+should be updated together if `Flask-SQLAlchemy` is upgraded to 3.x.
+
+### Database persistence
+
+The Compose setup bind-mounts `./data` into `/app/data` and sets
+`SQLALCHEMY_DATABASE_URI=sqlite:///data/tasks.db`, so tasks survive container
+restarts. The `data/` directory is created on first run and should not be
+committed.
 
 ## Testing
 
